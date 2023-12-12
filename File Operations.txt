@@ -1,0 +1,134 @@
+File Operations
+
+
+1. Write data in Excel:
+
+package com.java.exceloperation;
+
+import java.io.FileOutputStream;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Write_Excel {
+
+	public static void main(String[] args) {
+
+		// create a new excel file ---->create object of xssf workbook 
+		
+		
+		try {
+			XSSFWorkbook wrkbk = new XSSFWorkbook();
+			
+			// we need to create a new sheet 
+			Sheet sheet = wrkbk.createSheet("Sheet1");
+			
+			// Define data ---- dta which we want to insert to excel file
+			// Create an object od 2 dimensional array
+			Object[][] data= {
+					
+					{"Name ", "Age", "Email"},
+					{"John Doe", 30, " john@test.com"},
+					{"Jane Doe" , 28, " john@test.com"},
+					{"Bob Smith", 35 , " jacky@example.com"},
+					{"Swapnil", 37 ,"joe@example.com"},
+				};
+		//iterate and traverse across the data of the array and write into sheet 
+			int rownum = 0;
+			
+		// now we need to iterate over this data "  Object[][] data=   "..for this we need to go with looping mechanism
+			
+			for(Object[]rowdata : data) {
+				
+	        Row row = sheet.createRow(rownum++); // creating new row in sheet 1
+
+	        int colnum =0;
+	        for(Object coldata : rowdata) {
+	        	
+	        	Cell cell = row.createCell(colnum++);
+	        	//check the data type
+	        	if(coldata instanceof String) {         
+	        		cell.setCellValue((String)coldata); 
+	        		
+	        	}else if(coldata instanceof Integer){
+	        		cell.setCellValue((Integer)coldata);
+	        	}
+	        }
+			
+			}
+			
+		// write the data into the excel file and provide the file name 
+			FileOutputStream f = new FileOutputStream("Employee Details.xlsx"); 
+			wrkbk.write(f);
+			
+			System.out.println("Data entered successfully");
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace(); 
+			}
+			}
+}
+
+
+Output:
+
+Data entered successfully
+
+
+
+2.Read Data :
+
+package com.java.exceloperation;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Read_WExcel {
+
+	public static void main(String[] args) throws IOException {
+try {
+		String  file = "D:\\java exercise\\MyJava\\Employee Details.xlsx";
+		
+		FileInputStream fis = new FileInputStream(file);
+		
+		XSSFWorkbook wrkbk = new XSSFWorkbook(fis);
+		
+		Sheet sheet = wrkbk.getSheetAt(0);
+		
+		for(Row row : sheet) {
+			
+			for(Cell cell : row) {
+				
+				System.out.println(cell.getStringCellValue());
+			}
+			
+			}
+		}
+		
+		catch(Exception e) {
+			
+		}
+		}
+		
+		
+	}
+
+Output:
+
+Name 
+Age
+Email
+John Doe
